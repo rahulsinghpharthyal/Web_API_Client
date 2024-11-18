@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createEmployeeAction, updateEmployeeAction } from "../redux/actions/employeeAction";
+import {
+  createEmployeeAction,
+  updateEmployeeAction,
+} from "../redux/actions/employeeAction";
 import { axiosPrivate } from "../customAxios/customAxios";
 import { ImageLoader } from "../components/common/Loader";
 import { toast } from "react-toastify";
@@ -10,7 +13,7 @@ const CreateEmployee = () => {
   const [imageFile, setImageFile] = useState(null);
   const [uploadImage, setUploadImage] = useState(false);
   const dispatch = useDispatch();
-  const {isError} = useSelector((state)=>state.employee);
+  const { isError } = useSelector((state) => state.employee);
   const location = useLocation();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -23,12 +26,12 @@ const CreateEmployee = () => {
     imageURI: null,
   });
 
-  console.log('this is the location', location);
+  console.log("this is the location", location);
 
-  useEffect(()=>{
-    if(location?.state?.employeeData){
+  useEffect(() => {
+    if (location?.state?.employeeData) {
       const employee = location?.state?.employeeData;
-      console.log(employee)
+      console.log(employee);
       setFormData({
         employeeName: employee.employeeName || "",
         email: employee.email || "",
@@ -37,10 +40,9 @@ const CreateEmployee = () => {
         gender: employee.gender || "",
         course: employee.course || "",
         imageURI: employee.imageURI || null,
-      })
+      });
     }
   }, [location]);
-
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -74,7 +76,7 @@ const CreateEmployee = () => {
           },
         }
       );
-      if(response.data.success){
+      if (response.data.success) {
         const { secure_url } = response.data.Data;
         setFormData((prevState) => ({ ...prevState, imageURI: secure_url }));
         setUploadImage(false);
@@ -87,51 +89,55 @@ const CreateEmployee = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(location?.state?.employeeData){
+    if (location?.state?.employeeData) {
       // const updateEmployeeData = {...formData}
-      try{
-        const {payload} = await dispatch(updateEmployeeAction({id: location.state.employeeData._id, formData}));
+      try {
+        const { payload } = await dispatch(
+          updateEmployeeAction({
+            id: location.state.employeeData._id,
+            formData,
+          })
+        );
         console.log(payload);
-        if(payload.success){
+        if (payload.success) {
           toast.success(payload.message);
-          navigate('/employee-list')
-        }else{
+          navigate("/employee-list");
+        } else {
           toast.error(payload.message);
         }
-      }catch(error){
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
-      
-    }else{
-
+    } else {
       // Add your form submission logic here
       try {
         const { payload } = await dispatch(createEmployeeAction(formData));
-        if(payload.success){
-        toast.success(payload.message);
-        setFormData({
-          employeeName: "",
-          email: "",
-          mobileNumber: "",
-          designation: "HR",
-          gender: "",
-          course: "",
-          imageURI: null,
-        })
-        navigate('/employee-list')
-
-      }else{
-        toast.error(isError);
+        if (payload.success) {
+          toast.success(payload.message);
+          setFormData({
+            employeeName: "",
+            email: "",
+            mobileNumber: "",
+            designation: "HR",
+            gender: "",
+            course: "",
+            imageURI: null,
+          });
+          navigate("/employee-list");
+        } else {
+          toast.error(isError);
+        }
+      } catch (error) {
+        toast.error(error.response.data.message || error.message);
       }
-    } catch (error) {
-      toast.error(error.response.data.message || error.message)
     }
-  }
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-gray-300 rounded-lg mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-center">Create Employee</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">
+        {location?.state?.employeeData ? "Update Employee" : "Create Employee"}
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-1">
           <label
@@ -324,7 +330,8 @@ const CreateEmployee = () => {
             type="submit"
             className="w-full bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Submit
+            {location?.state?.employeeData ? 'Update Emplyee' : 'Create Employee'
+            }
           </button>
         </div>
       </form>
