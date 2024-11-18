@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<DashBoard />}>
-              <Route index element={<Home />} />
+              <Route index element={<Home/>} />
               <Route path="employee-list" element={<EmployeeList />} />
               <Route path="create-employee" element={<CreateEmployee />} />
               <Route
