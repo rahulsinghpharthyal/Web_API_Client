@@ -8,10 +8,11 @@ const EmployeeList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [employees, setEmployees] = useState([]);
   const dispatch = useDispatch();
-
   const { employee } = useSelector((state) => state.employee);
+
   const navigate = useNavigate();
 
+  console.log(employee);
   useEffect(() => {
     dispatch(getEmployeeAction());
   }, [dispatch]);

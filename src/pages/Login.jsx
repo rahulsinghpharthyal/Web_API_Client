@@ -41,7 +41,7 @@ const Login = () => {
       const { payload } = await dispatch(loginUserAction(loginForm));
       if (payload?.success) {
         toast.success(payload?.message);
-        navigate('/dashboard');
+        navigate('/');
       }else {
         alert(`Login failed: ${result.payload}`);
       }

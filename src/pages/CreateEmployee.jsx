@@ -94,7 +94,7 @@ const CreateEmployee = () => {
         console.log(payload);
         if(payload.success){
           toast.success(payload.message);
-          navigate('/dashboard/employee-list')
+          navigate('/employee-list')
         }else{
           toast.error(payload.message);
         }
@@ -118,7 +118,7 @@ const CreateEmployee = () => {
           course: "",
           imageURI: null,
         })
-        navigate('/dashboard/employee-list')
+        navigate('/employee-list')
 
       }else{
         toast.error(isError);
